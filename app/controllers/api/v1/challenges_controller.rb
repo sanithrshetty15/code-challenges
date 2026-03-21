@@ -36,7 +36,7 @@ module Api
                 if challengee.update{challenges_params}
                     render json: {message: 'challenge updated' , data: challenge}
                 else
-                    render json: { message: 'challenge not found',data: challenge.errors}
+                    render json: { message: 'challenge not updated',data: challenge.errors}
                 end
             end
 
@@ -47,7 +47,7 @@ module Api
                 if challengee.destroy{challenges_params}
                     render json: {message: 'challenge deleted' , data: challenge}
                 else
-                    render json: { message: 'challenge not found',data: challenge.errors}
+                    render json: { message: 'challenge not deleted',data: challenge.errors}
                 end
 
    
