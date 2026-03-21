@@ -21,20 +21,37 @@ module Api
 
              #GET    /api/v1/challenges/:id
             def show
-                #show single challenge
+                challenge = Challenge.find(params{:challenge_id})
+                if challenge
+                    render json: {message: 'challenge found' , data: challenge}
+                else
+                    render json: { message: 'challenge not found',data: challenge.errors}
             end
 
 
             #PATCH  /api/v1/challenges/:id
             #PUT    /api/v1/challenges/:id
             def update
-                 #update single challenge
+                challenge = Challenge.find(params{:id})
+                if challengee.update{challenges_params}
+                    render json: {message: 'challenge updated' , data: challenge}
+                else
+                    render json: { message: 'challenge not found',data: challenge.errors}
+                end
             end
 
 
             # DELETE /api/v1/challenges/:id
             def destroy
-                 #delete single challenge
+                challenge = Challenge.find(params{:id})
+                if challengee.destroy{challenges_params}
+                    render json: {message: 'challenge deleted' , data: challenge}
+                else
+                    render json: { message: 'challenge not found',data: challenge.errors}
+                end
+
+   
+
             end
             private
 
