@@ -26,6 +26,7 @@ module Api
                     render json: {message: 'challenge found' , data: challenge}
                 else
                     render json: { message: 'challenge not found',data: challenge.errors}
+                end
             end
 
 
@@ -34,9 +35,9 @@ module Api
             def update
                 challenge = Challenge.find(params{:id})
                 if challengee.update{challenges_params}
-                    render json: {message: 'challenge updated' , data: challenge}
+                    render json: {message: 'challenge update' , data: challenge}
                 else
-                    render json: { message: 'challenge not updated',data: challenge.errors}
+                    render json: { message: 'challenge not found',data: challenge.errors}
                 end
             end
 
@@ -47,11 +48,8 @@ module Api
                 if challengee.destroy{challenges_params}
                     render json: {message: 'challenge deleted' , data: challenge}
                 else
-                    render json: { message: 'challenge not deleted',data: challenge.errors}
+                    render json: { message: 'challenge not found',data: challenge.errors}
                 end
-
-   
-
             end
             private
 
