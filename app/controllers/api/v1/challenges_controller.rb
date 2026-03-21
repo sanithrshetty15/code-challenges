@@ -10,10 +10,7 @@ module Api
 
             #POST   /api/v1/challenges   
             def create
-            puts 'starting'
-            puts params
-            puts 'Done'
-                challenge = Challenge.new(title: 'Sanith R Shetty', description: "Ruby is wonderful", start_date: Date.today ,end_date: Date.tomorrow)
+                challenge = Challenge.new(challenges_params)
                 if challenge.save
                     render json: {message: "challenge added successfully", data: challenge }
                 else 
@@ -38,6 +35,11 @@ module Api
             # DELETE /api/v1/challenges/:id
             def destroy
                  #delete single challenge
+            end
+            private
+
+            def challenges_params
+                params.required(:challenge).permit(:title, :description , :start_date , :end_date)
             end
         end
     end
