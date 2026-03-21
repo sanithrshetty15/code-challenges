@@ -10,8 +10,15 @@ module Api
 
             #POST   /api/v1/challenges   
             def create
-                #create single challenge
-
+            puts 'starting'
+            puts params
+            puts 'Done'
+                challenge = Challenge.new(title: 'Sanith R Shetty', description: "Ruby is wonderful", start_date: Date.today ,end_date: Date.tomorrow)
+                if challenge.save
+                    render json: {message: "challenge added successfully", data: challenge }
+                else 
+                    render json: {message: "Failed to add challenge", data: challenge.errors}
+                end
             end
 
 
