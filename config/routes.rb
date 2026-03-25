@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   
   # /api/v1/challenges
   # /api/v1/challenges
