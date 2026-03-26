@@ -9,7 +9,8 @@ module Api
       end
 
       def create
-        @challenge = Challenge.new(challenges_params)
+        
+        @challenge = Challenge.new(challenges_params.merge(user_id: current_user.id))
         if @challenge.save
           render json: { message: "challenge added successfully", data: @challenge }
         else
