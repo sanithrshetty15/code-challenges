@@ -1,13 +1,15 @@
 module Api
   module V1
     class ChallengesController < ApplicationController
-        before_action :set_challenge,only: %1[show update destroy]
+      before_action :authenticate_user!,only: %i[create update destroy],
+      before_action :set_challenge,only: %i[show update destroy]
       def index
         @challenges = Challenge.all
         render json: @challenges
       end
 
       def create
+        @challenge = Challenge.new(challenges_params)
         if @challenge.save
           render json: { message: "challenge added successfully", data: @challenge }
         else
