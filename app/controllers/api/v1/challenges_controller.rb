@@ -1,51 +1,80 @@
 module Api
   module V1
     class ChallengesController < ApplicationController
-      before_action :authenticate_user!,only: %i[create update destroy],
-      before_action :set_challenge,only: %i[show update destroy]
+      before_action :authenticate_user!, only: %i[create update destroy]
+      before_action :set_challenge, only: %i[show update destroy]
+
+      # GET /api/v1/challenges
       def index
         @challenges = Challenge.all
-        render json: @challenges
+        render json: @challenges, status: :ok
       end
 
+      # POST /api/v1/challenges
       def create
-        
-        @challenge = Challenge.new(challenges_params.merge(user_id: current_user.id))
+        @challenge = current_user.challenges.build(challenge_params)
+
         if @challenge.save
-          render json: { message: "challenge added successfully", data: @challenge }
+          render json: {
+            message: "Challenge created successfully",
+            data: @challenge
+          }, status: :created
         else
-          render json: { message: "Failed to add challenge", data: @challenge.errors }
+          render json: {
+            message: "Failed to create challenge",
+            errors: @challenge.errors.full_messages
+          }, status: :unprocessable_entity
         end
       end
 
+      # GET /api/v1/challenges/:id
       def show
-        if @challenge
-          render json: { message: 'challenge found', data: @challenge }
-        else
-          render json: { message: 'challenge not found',data: @challenge.errors }
-        end
+        render json: {
+          message: "Challenge found",
+          data: @challenge
+        }, status: :ok
       end
 
+      # PATCH/PUT /api/v1/challenges/:id
       def update
-        if @challenge.update(challenges_params)
-          render json: { message: 'challenge updated', data: @challenge }
+        if @challenge.update(challenge_params)
+          render json: {
+            message: "Challenge updated successfully",
+            data: @challenge
+          }, status: :ok
         else
-          render json: { message: 'challenge not updated', data: @challenge.errors }
+          render json: {
+            message: "Failed to update challenge",
+            errors: @challenge.errors.full_messages
+          }, status: :unprocessable_entity
         end
       end
 
+      # DELETE /api/v1/challenges/:id
       def destroy
         if @challenge.destroy
-          render json: { message: 'challenge deleted', data: @challenge }
+          render json: {
+            message: "Challenge deleted successfully"
+          }, status: :ok
         else
-          render json: { message: 'challenge not deleted', data: @challenge.errors }
+          render json: {
+            message: "Failed to delete challenge",
+            errors: @challenge.errors.full_messages
+          }, status: :unprocessable_entity
         end
       end
 
       private
+
+      # Find challenge
       def set_challenge
-        @challenge = Challenge.find(params{:id})
-      def challenges_params
+        @challenge = Challenge.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render json: { message: "Challenge not found" }, status: :not_found
+      end
+
+      # Strong parameters
+      def challenge_params
         params.require(:challenge).permit(:title, :description, :start_date, :end_date)
       end
     end
