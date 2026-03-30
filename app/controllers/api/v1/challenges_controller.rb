@@ -3,6 +3,7 @@ module Api
     class ChallengesController < ApplicationController
       before_action :authenticate_user!, only: %i[create update destroy]
       before_action :set_challenge, only: %i[show update destroy]
+      before_action :authorize_admin, only: %i[create update destroy]
 
       # GET /api/v1/challenges
       def index
@@ -65,6 +66,12 @@ module Api
       end
 
       private
+
+      def authorize_admin
+        return unless current_user.email == 'admin@gmail.com'
+          render json: { message: 'Forbidden action.'}
+        end
+      end
 
       # Find challenge
       def set_challenge
