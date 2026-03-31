@@ -68,17 +68,14 @@ module Api
       private
 
       def authorize_admin
-        return unless current_user.email == 'admin@gmail.com'
-          render json: { message: 'Forbidden action.'}
-        end
+        render json: { message: 'Forbidden action.'} unless current_user.email == ENV["ADMIN_EMAIL"]
       end
 
       # Find challenge
       def set_challenge
         @challenge = Challenge.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render json: { message: "Challenge not found" }, status: :not_found
       end
+
 
       # Strong parameters
       def challenge_params

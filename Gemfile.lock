@@ -375,6 +375,7 @@ DEPENDENCIES
   debug
   devise (~> 5.0)
   devise-jwt
+  dotenv
   image_processing (~> 1.2)
   kamal
   pg (~> 1.1)
